@@ -1,11 +1,9 @@
-/* Base Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Global styles */
 body {
   font-family: 'Inter', sans-serif;
   background: #f5f7fa;
@@ -14,7 +12,6 @@ body {
   padding: 0 1.5rem;
 }
 
-/* Header */
 header {
   background: linear-gradient(to right, #1e3c72, #2a5298);
   color: white;
@@ -51,7 +48,6 @@ nav a:hover {
   color: #ffffff;
 }
 
-/* Section Styles */
 section {
   margin-top: 4rem;
   padding: 2rem;
@@ -73,8 +69,12 @@ h2 {
   padding-left: 12px;
 }
 
-/* Project Cards */
+.container{
+  font-size: 2em;
+}
 .project {
+  padding: 0px 2em;
+  font-size: 2rem;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -99,6 +99,7 @@ h2 {
 
 .project div {
   padding: 1.5rem;
+  margin: 1.5rem;
   flex: 1;
 }
 
@@ -124,7 +125,6 @@ h2 {
   color: #000;
 }
 
-/* Contact */
 #contact {
   text-align: center;
 }
@@ -144,7 +144,6 @@ h2 {
   text-decoration: underline;
 }
 
-/* Footer */
 footer {
   text-align: center;
   margin-top: 4rem;
@@ -153,8 +152,7 @@ footer {
   font-size: 0.9rem;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+  @media (max-width: 768px) {
   .project {
     flex-direction: column;
   }
