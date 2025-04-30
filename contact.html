@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cooper Haddick Contact</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyCsEAjhCf0NbNDLGOc-BeosBKdKQKoTe4w",
+          authDomain: "messages-11a1c.firebaseapp.com",
+          databaseURL: "https://messages-11a1c-default-rtdb.firebaseio.com",
+          projectId: "messages-11a1c",
+          storageBucket: "messages-11a1c.firebasestorage.app",
+          messagingSenderId: "619616197184",
+          appId: "1:619616197184:web:72e0f7d89a98acbf1a1da5",
+          measurementId: "G-GQPR86EXE7"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const analytics = getAnalytics(app);
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const form = document.querySelector("form");
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const name = document.getElementById("name").value;
+                const email = document.getElementById("email").value;
+                const phone = document.getElementById("phone").value;
+                const updates = document.querySelector('input[name="updates"]:checked')?.value || "Not specified";
+                
+                const contactTypes = Array.from(document.querySelectorAll('input[name="contact_type[]"]:checked'))
+                    .map(cb => cb.value);
+                    
+                const rating = document.getElementById("rating").value;
+                const message = document.getElementById("message").value;
+
+                try {
+                    const messagesRef = ref(database, 'messages');
+                    const safeName = name.toLowerCase().replace(/\s+/g, '_');
+                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+                    const customKey = `${safeName}_${timestamp}`;
+
+                    const newMessageRef = ref(database, `messages/${customKey}`);
+                    await set(newMessageRef, {
+                    id: name+ ":" +new Date().toISOString(),
+                    name,
+                    email,
+                    phone,
+                    updates,
+                    contactTypes,
+                    rating,
+                    message,
+                    timestamp: new Date().toISOString()
+                    });
+
+                    window.location.href = "index.html";
+                } catch (error) {
+                    console.error("Error sending message:", error);
+                    alert("There was an error submitting your message.");
+                }
+            });
+
+            const stars = document.querySelectorAll("#star-rating span");
+            const ratingInput = document.getElementById("rating");
+
+            stars.forEach(star => {
+                star.addEventListener("click", () => {
+                    const rating = star.getAttribute("data-value");
+                    ratingInput.value = rating;
+
+                    stars.forEach(s => {
+                    s.classList.toggle("selected", s.getAttribute("data-value") <= rating);
+                    });
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" style="color: white;"><h1>Cooper Haddick</h1></a>
+            <p>Web Developer | Student | Creative Problem Solver</p>
+          <nav>
+            <a href="bio.html">About</a>
+            <a href="projects.html">Projects</a>
+            <a href="resume.html">Resume</a>
+            <a href="contact.html">Contact</a>
+          </nav>
+        </div>
+      </header>
+    <form method="post">
+        <img 
+            width="550" 
+            src="images/handshake.png" 
+            alt="Contact illustration" 
+            class="contact-image"
+            style="display: flex; flex-direction: row; align-items: center; justify-content: center;" 
+        />
+        <h3 style="display: flex; flex-direction: row; align-items: center; justify-content: center;">Contact Me</h3>
+        <div>
+        <label for="name">Name *</label>
+        <input type="text" id="name" name="name" placeholder="E.g. John Doe" required>
+        </div>
+    
+        <div>
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" name="email" placeholder="E.g. john@doe.com" required>
+        </div>
+    
+        <div>
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" name="phone" placeholder="E.g. +1 3004005000">
+        </div>
+    
+        <div>
+        <p>Would you like to receive updates?</p>
+        <label>
+            <input type="radio" name="updates" value="yes" checked> Yes
+        </label>
+        <label>
+            <input type="radio" name="updates" value="no"> No
+        </label>
+        </div>
+    
+        <div>
+        <p>Type</p>
+        <label>
+            <input type="checkbox" name="contact_type[]" value="email"> Email
+        </label>
+        <label>
+            <input type="checkbox" name="contact_type[]" value="text"> Text Message
+        </label>
+        </div>
+    
+        <div>
+            <label>What did you think of my projects?</label>
+            <div id="star-rating" class="stars">
+              <span data-value="1">★</span>
+              <span data-value="2">★</span>
+              <span data-value="3">★</span>
+              <span data-value="4">★</span>
+              <span data-value="5">★</span>
+            </div>
+            <input type="hidden" id="rating" name="rating" value="0">
+          </div>
+          
+    
+        <div>
+        <label for="message">Message *</label>
+        <small>Tell me what you liked/disliked</small>
+        <textarea id="message" name="message" placeholder="Enter your message..." required></textarea>
+        </div>
+    
+        <div>
+        <button type="submit">Send Message</button>
+        </div>
+    </form>
+    <footer>
+        <p>&copy; 2025 Cooper Haddick</p>
+      </footer>
+</body>
+</html>  
