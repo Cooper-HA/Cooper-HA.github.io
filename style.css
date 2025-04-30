@@ -282,9 +282,6 @@ a:focus {
   border-bottom: 2px solid #005999;
 }
 
-a:visited {
-  color: #5a5a5a;
-}
 .stars span {
   font-size: 2rem;
   color: #ccc;
